@@ -36,6 +36,15 @@
                 "${workspaceFolder}/Udemy Angular Course.sln"
             ],
             "problemMatcher": "$msCompile"
+        },
+        {
+            "type": "dotnet",
+            "task": "watch API",
+            "file": "c:\\Projects\\Udemy Angular Course\\API\\API.csproj",
+            "problemMatcher": [
+                "$msCompile"
+            ],
+            "label": "dotnet: watch API"
         }
     ]
 }
