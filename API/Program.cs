@@ -1,5 +1,7 @@
 using API;
+using API.Data;
 using API.Middleware;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,5 +22,23 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+/////////////////////////////////////////////////////////////////////////////
+/// This is just for creating mock data
+/////////////////////////////////////////////////////////////////////////////
+using var scope = app.Services.CreateScope();
+var services = scope.ServiceProvider;
+try
+{
+    var ctx = services.GetRequiredService<DataContext>();
+    await ctx.Database.MigrateAsync();
+    await Seed.SeedUsers(ctx);
+}
+catch (Exception ex)
+{
+    var logger = services.GetService<ILogger<Program>>();
+    logger.LogError(ex, "An error occured during migration!");
+}
+/////////////////////////////////////////////////////////////////////////////
 
 app.Run();
